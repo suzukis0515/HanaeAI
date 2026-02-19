@@ -44,9 +44,9 @@ const MOCK_PROJECTS = [
 ];
 
 const MOCK_TALENTS = [
-  { id: 1, name: "佐藤 健一", type: "フリーランス", skillSummary: "フロントエンド全般, リーダー経験あり", price: "90万円/月", status: "稼働可能", date: "2023-10-25", skills: ["React", "TypeScript", "Next.js"] },
-  { id: 2, name: "鈴木 花子", type: "BP", skillSummary: "サーバーサイド強み, AWS設計", price: "100万円/月", status: "稼働中", date: "2023-10-24", skills: ["Go", "AWS", "Docker"] },
-  { id: 3, name: "高橋 誠", type: "プロパー", skillSummary: "PM経験10年, 大規模開発", price: "140万円/月", status: "応相談", date: "2023-10-20", skills: ["PMBOK", "JIRA"] },
+  { id: 1, name: "佐藤 健一", type: "フリーランス", skillSummary: "フロントエンド全般, リーダー経験あり", price: "90万円/月", status: "緊急度低い 重要度高い", date: "2023-10-25", skills: ["React", "TypeScript", "Next.js"] },
+  { id: 2, name: "鈴木 花子", type: "BP", skillSummary: "サーバーサイド強み, AWS設計", price: "100万円/月", status: "緊急度高い 重要度低い", date: "2023-10-24", skills: ["Go", "AWS", "Docker"] },
+  { id: 3, name: "高橋 誠", type: "プロパー", skillSummary: "PM経験10年, 大規模開発", price: "140万円/月", status: "緊急度高い 重要度高い", date: "2023-10-20", skills: ["PMBOK", "JIRA"] },
 ];
 
 const MOCK_TASKS = [
