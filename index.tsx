@@ -451,13 +451,14 @@ const Dashboard = ({ onChangeView, onTaskClick }: { onChangeView: (view: string)
             <Button variant="secondary" className="w-full justify-start" icon={Briefcase} onClick={() => onChangeView('projects')}>案件を登録</Button>
             <Button variant="secondary" className="w-full justify-start" icon={Users} onClick={() => onChangeView('talents')}>人材を登録</Button>
             <Button variant="secondary" className="w-full justify-start" icon={Mail} onClick={() => onChangeView('search')}>メールを探す</Button>
-            <Button variant="secondary" className="w-full justify-start" icon={Plus} onClick={() => onChangeView('progress')}>タスクを作る</Button>
           </Card>
         </div>
       </div>
     </div>
   );
 };
+
+const SUB_ITEM_STATUSES = ["アプローチ", "駆け引き", "商談", "交渉", "成約", "契約手続き済み", "失注"];
 
 const Register = ({ type }: { type: 'project' | 'talent' }) => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -598,11 +599,29 @@ const Register = ({ type }: { type: 'project' | 'talent' }) => {
             <div className="space-y-2 mb-4">
                 {relatedProjects.length > 0 ? relatedProjects.map(p => (
                    <div key={p.id} className="flex items-center justify-between bg-blue-50 p-2 rounded border border-blue-100 animate-in fade-in slide-in-from-right-4">
-                      <div className="flex items-center gap-2 overflow-hidden">
+                      <div className="flex items-center gap-2 overflow-hidden flex-1">
                          <Briefcase className="w-3 h-3 text-blue-600 shrink-0" />
-                         <span className="text-sm text-gray-700 truncate">{p.name}</span>
+                         <span className="text-sm text-gray-700 truncate flex-1">{p.name}</span>
+                         <div 
+                           onClick={(e) => {
+                             e.stopPropagation();
+                             const current = p.subStatus || "アプローチ";
+                             const next = SUB_ITEM_STATUSES[(SUB_ITEM_STATUSES.indexOf(current) + 1) % SUB_ITEM_STATUSES.length];
+                             setRelatedProjects(relatedProjects.map(rp => rp.id === p.id ? {...rp, subStatus: next} : rp));
+                           }}
+                           className="cursor-pointer hover:opacity-80 transition"
+                         >
+                            <Badge color={
+                                ["成約", "契約手続き済み"].includes(p.subStatus) ? "green" :
+                                ["失注"].includes(p.subStatus) ? "gray" :
+                                ["商談", "交渉"].includes(p.subStatus) ? "yellow" :
+                                ["駆け引き"].includes(p.subStatus) ? "purple" : "blue"
+                            }>
+                                {p.subStatus || "アプローチ"}
+                            </Badge>
+                         </div>
                       </div>
-                      <button onClick={() => setRelatedProjects(relatedProjects.filter(rp => rp.id !== p.id))} className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition"><X className="w-3 h-3"/></button>
+                      <button onClick={() => setRelatedProjects(relatedProjects.filter(rp => rp.id !== p.id))} className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition ml-2"><X className="w-3 h-3"/></button>
                    </div>
                 )) : (
                   <p className="text-xs text-gray-400 py-2">関連付けられた案件はありません。<br/>右側の検索から追加してください。</p>
@@ -838,7 +857,7 @@ const Register = ({ type }: { type: 'project' | 'talent' }) => {
                            onClick={(e) => {
                              e.stopPropagation();
                              if (!relatedProjects.find(rp => rp.id === p.id)) {
-                                 setRelatedProjects([...relatedProjects, p]);
+                                 setRelatedProjects([...relatedProjects, { ...p, subStatus: "アプローチ" }]);
                              }
                            }}
                            className="text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1"
